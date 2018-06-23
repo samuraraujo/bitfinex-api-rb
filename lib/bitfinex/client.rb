@@ -5,13 +5,13 @@ module Bitfinex
     attr_accessor :api_key, :websocket_api_endpoint, :rest_timeout
     attr_accessor :reconnect, :reconnect_after, :rest_open_timeout
     attr_accessor :api_version
-    include Bitfinex::RestConnection
-    include Bitfinex::WebsocketConnection
-    include Bitfinex::AuthenticatedConnection
+    extend Bitfinex::RestConnection
+    extend Bitfinex::WebsocketConnection
+    extend Bitfinex::AuthenticatedConnection
     include Bitfinex::Configurable
 
 
-    def initialize(api_version=1)
+    def initialize(api_version = 1)
       @api_version = api_version
 
       debug = false
@@ -23,10 +23,10 @@ module Bitfinex
 
       if @api_version == 1
 
-         api_endpoint = "https://api.bitfinex.com/v1/"
-         websocket_api_endpoint = "wss://api.bitfinex.com/ws"
+        api_endpoint = "https://api.bitfinex.com/v1/"
+        websocket_api_endpoint = "wss://api.bitfinex.com/ws"
 
-         api_version = 1
+        api_version = 1
 
         extend Bitfinex::V1::TickerClient
         extend Bitfinex::V1::TradesClient
