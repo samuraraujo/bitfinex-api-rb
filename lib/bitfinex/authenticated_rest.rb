@@ -8,7 +8,7 @@ module Bitfinex
       body = options[:params] || {}
       nonce = new_nonce
 
-      payload = if config.api_version == 1
+      payload = if api_version == 1
         build_payload("/v1/#{url}", options[:params], nonce)
       else
         "/api#{complete_url}#{nonce}#{body.to_json}"
@@ -17,19 +17,19 @@ module Bitfinex
       response = rest_connection.post do |req|
         req.url complete_url
         req.body = body.to_json
-        req.options.timeout = config.rest_timeout
-        req.options.open_timeout = config.rest_open_timeout
+        req.options.timeout = rest_timeout
+        req.options.open_timeout = rest_open_timeout
         req.headers['Content-Type'] = 'application/json'
         req.headers['Accept'] = 'application/json'
 
-        if config.api_version == 1
+        if api_version == 1
           req.headers['X-BFX-PAYLOAD'] = payload
           req.headers['X-BFX-SIGNATURE'] = sign(payload)
-          req.headers['X-BFX-APIKEY'] = config.api_key
+          req.headers['X-BFX-APIKEY'] = api_key
         else
           req.headers['bfx-nonce'] = nonce
           req.headers['bfx-signature'] = sign(payload)
-          req.headers['bfx-apikey'] = config.api_key
+          req.headers['bfx-apikey'] = api_key
         end
       end
     end

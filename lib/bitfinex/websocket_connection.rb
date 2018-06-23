@@ -23,10 +23,10 @@ module Bitfinex
 
     def ws_auth(&block)
       unless @ws_auth
-        nonce = (Time.now.to_f * 10_000).to_i.to_s
+        nonce = (Time.now.to_f * 1000000).to_i.to_s
         sub_id = add_callback(&block)
         save_channel_id(sub_id,0)
-        if config.api_version == 1
+        if api_version == 1
           payload = 'AUTH' + nonce
           signature = sign(payload)
           ws_safe_send({
@@ -66,9 +66,9 @@ module Bitfinex
 
     def ws_client
       options = {
-        url: config.websocket_api_endpoint,
-        reconnect: config.reconnect,
-        reconnect_after: config.reconnect_after
+        url: websocket_api_endpoint,
+        reconnect: reconnect,
+        reconnect_after: reconnect_after
       }
       @ws_client ||= WSClient.new(options)
     end
