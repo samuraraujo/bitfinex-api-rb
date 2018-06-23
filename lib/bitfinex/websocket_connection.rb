@@ -70,6 +70,7 @@ module Bitfinex
         reconnect: reconnect,
         reconnect_after: reconnect_after
       }
+      puts options
       @ws_client ||= WSClient.new(options)
     end
 

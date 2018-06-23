@@ -13,16 +13,19 @@ module Bitfinex
 
     def initialize(api_version=1)
       @api_version = api_version
+
+      debug = false
+      reconnect = true
+      reconnect_after = 60
+      rest_timeout = 30
+      rest_open_timeout = 30
+      debug_connection = false
+
       if @api_version == 1
 
          api_endpoint = "https://api.bitfinex.com/v1/"
          websocket_api_endpoint = "wss://api.bitfinex.com/ws"
-         debug = false
-         reconnect = true
-         reconnect_after = 60
-         rest_timeout = 30
-         rest_open_timeout = 30
-         debug_connection = false
+
          api_version = 1
 
         extend Bitfinex::V1::TickerClient
@@ -40,7 +43,7 @@ module Bitfinex
         extend Bitfinex::V1::MarginFundingClient
         extend Bitfinex::V1::WalletClient
       else
-        api_version = 2
+
         api_endpoint = "https://api.bitfinex.com/v2/"
         websocket_api_endpoint = "wss://api.bitfinex.com/ws/2/"
         extend Bitfinex::V2::TickerClient
