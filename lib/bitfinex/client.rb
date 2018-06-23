@@ -5,9 +5,7 @@ module Bitfinex
     attr_accessor :api_key, :websocket_api_endpoint, :rest_timeout
     attr_accessor :reconnect, :reconnect_after, :rest_open_timeout
     attr_accessor :api_version
-    extend Bitfinex::RestConnection
-    extend Bitfinex::WebsocketConnection
-    extend Bitfinex::AuthenticatedConnection
+
     include Bitfinex::Configurable
 
 
@@ -53,6 +51,10 @@ module Bitfinex
         extend Bitfinex::V2::TradingClient
         extend Bitfinex::V2::MarginClient
       end
+
+      extend Bitfinex::RestConnection
+      extend Bitfinex::WebsocketConnection
+      extend Bitfinex::AuthenticatedConnection
 
       @mutex = Mutex.new
       @c_counter = 1
