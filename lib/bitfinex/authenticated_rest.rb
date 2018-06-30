@@ -25,11 +25,11 @@ module Bitfinex
         if api_version == 1
           req.headers['X-BFX-PAYLOAD'] = payload
           req.headers['X-BFX-SIGNATURE'] = sign(payload)
-          req.headers['X-BFX-APIKEY'] = api_key
+          req.headers['X-BFX-APIKEY'] = config.api_key
         else
           req.headers['bfx-nonce'] = nonce
           req.headers['bfx-signature'] = sign(payload)
-          req.headers['bfx-apikey'] = api_key
+          req.headers['bfx-apikey'] = config.api_key
         end
       end
     end
