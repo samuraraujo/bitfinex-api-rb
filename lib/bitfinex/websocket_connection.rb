@@ -48,7 +48,7 @@ module Bitfinex
             event: 'auth'
           })
         end
-        #@ws_auth = true
+        @ws_auth = true
       end
     end
 
