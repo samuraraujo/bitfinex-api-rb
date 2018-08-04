@@ -25,28 +25,28 @@ module Bitfinex
       unless @ws_auth
         nonce = (Time.now.to_f * 1000000).to_i.to_s
         sub_id = add_callback(&block)
-        save_channel_id(sub_id,0)
+        save_channel_id(sub_id, 0)
         if api_version == 1
           payload = 'AUTH' + nonce
           signature = sign(payload)
           ws_safe_send({
-            apiKey: config.api_key,
-            authSig: sign(payload),
-            authPayload: payload,
-            subId: sub_id.to_s,
-            event: 'auth'
-          })
+                           apiKey: config.api_key,
+                           authSig: sign(payload),
+                           authPayload: payload,
+                           subId: sub_id.to_s,
+                           event: 'auth'
+                       })
         else
           payload = 'AUTH' + nonce + nonce
           signature = sign(payload)
           ws_safe_send({
-            apiKey: config.api_key,
-            authSig: sign(payload),
-            authPayload: payload,
-            authNonce: nonce,
-            subId: sub_id.to_s,
-            event: 'auth'
-          })
+                           apiKey: config.api_key,
+                           authSig: sign(payload),
+                           authPayload: payload,
+                           authNonce: nonce,
+                           subId: sub_id.to_s,
+                           event: 'auth'
+                       })
         end
         @ws_auth = true
       end
@@ -66,9 +66,9 @@ module Bitfinex
 
     def ws_client
       options = {
-        url: websocket_api_endpoint,
-        reconnect: reconnect,
-        reconnect_after: reconnect_after
+          url: websocket_api_endpoint,
+          reconnect: reconnect,
+          reconnect_after: reconnect_after
       }
 
       @ws_client ||= WSClient.new(options)
@@ -93,7 +93,7 @@ module Bitfinex
     def add_callback(&block)
       id = 0
       @mutex.synchronize do
-        callbacks[@c_counter] = { block: block, chan_id: nil }
+        callbacks[@c_counter] = {block: block, chan_id: nil}
         id = @c_counter
         @c_counter += 1
       end
@@ -103,7 +103,7 @@ module Bitfinex
     def register_authenticated_channel(msg, &block)
       sub_id = add_callback(&block)
       msg.merge!(subId: sub_id.to_s)
-      ws_safe_send(msg.merge(event:'subscribe'))
+      ws_safe_send(msg.merge(event: 'subscribe'))
     end
 
     def ws_safe_send(msg)
@@ -126,24 +126,30 @@ module Bitfinex
 
     def listen
       ws_client.on(:message) do |rmsg|
-         msg = JSON.parse(rmsg)
-         if msg.kind_of?(Hash) && msg["event"] == "subscribed"
-           save_channel_id(msg["subId"],msg["chanId"])
-         elsif msg.kind_of?(Array)
-           exec_callback_for(msg)
-         end
+        # puts rmsg
+        msg = JSON.parse(rmsg)
+        if msg.kind_of?(Hash) && msg["event"] == "subscribed"
+          save_channel_id(msg["subId"], msg["chanId"])
+          # elsif msg.kind_of?(Array)
+        else
+          exec_callback_for(msg)
+        end
       end
     end
 
-    def save_channel_id(sub_id,chan_id)
+    def save_channel_id(sub_id, chan_id)
       callbacks[sub_id.to_i][:chan_id] = chan_id
       chan_ids[chan_id] = sub_id.to_i
     end
 
     def exec_callback_for(msg)
-      return if msg[1] == 'hb' #ignore heartbeat
+      # return if msg[1] == 'hb' #ignore heartbeat
       id = msg[0]
-      callbacks[chan_ids[id.to_i]][:block].call(msg)
+      if (id)
+        callbacks[chan_ids[id.to_i]][:block].call(msg)
+      else
+        callbacks.compact.each{|c| c[:block].call(msg)}
+      end
     end
 
     def subscribe_to_channels
@@ -159,6 +165,7 @@ module Bitfinex
       def initialize(options = {})
         # set some defaults
         @url = options[:url] || 'wss://api.bitfinex.com/ws'
+        puts @url
         @reconnect = options[:reconnect] || false
         @reconnect_after = options[:reconnect_after] || 30
         @stop = false
@@ -173,7 +180,7 @@ module Bitfinex
         if EventMachine.reactor_running?
           connect!
         else
-          EM.run { connect! }
+          EM.run {connect!}
         end
       end
 
@@ -220,7 +227,7 @@ module Bitfinex
         if @stop
           EM.stop
         elsif @reconnect
-          EM.add_timer(@reconnect_after){ connect! }
+          EM.add_timer(@reconnect_after) {connect!}
         end
       end
 
