@@ -1,14 +1,11 @@
 require "./bitfinex.rb"
-client = Bitfinex::Client.new(2)
-client.listen_trades("BTCUSD") do |trade|
-  puts trade
-end
 
+client = Bitfinex::Client.new(2)
 Thread.new {
 
   while (true) do
     begin
-      sleep(5)
+      sleep(10)
       puts "sending ping"
       client.ws_send({event: 'ping'})
       puts "sent"
@@ -18,4 +15,17 @@ Thread.new {
     end
   end
 }
-client.listen!
+while true
+  begin
+    puts "RECONNECTING"
+    client = Bitfinex::Client.new(2)
+    client.listen_trades("BTCUSD") do |trade|
+      puts trade.join(",") if trade.instance_of? Array
+    end
+    client.listen!
+  rescue Exception => e
+    puts e
+    puts e.backtrace
+  end
+  sleep(3)
+end

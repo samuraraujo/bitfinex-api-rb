@@ -14,7 +14,7 @@ module Bitfinex
 
       @debug = false
       @reconnect = true
-      @reconnect_after = 60
+      @reconnect_after = 5
       @rest_timeout = 30
       @rest_open_timeout = 30
       @debug_connection = false
@@ -23,6 +23,7 @@ module Bitfinex
 
         @api_endpoint = "https://api.bitfinex.com/v1/"
         @websocket_api_endpoint = "wss://api.bitfinex.com/ws"
+
 
         @api_version = 1
 
@@ -44,6 +45,8 @@ module Bitfinex
 
         @api_endpoint = "https://api.bitfinex.com/v2/"
         @websocket_api_endpoint = "wss://api.bitfinex.com/ws/2/"
+        #@websocket_api_endpoint = "ws://localhost:8000"
+
         extend Bitfinex::V2::TickerClient
         extend Bitfinex::V2::StatsClient
         extend Bitfinex::V2::UtilsClient

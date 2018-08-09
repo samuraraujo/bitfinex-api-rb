@@ -165,9 +165,9 @@ module Bitfinex
       def initialize(options = {})
         # set some defaults
         @url = options[:url] || 'wss://api.bitfinex.com/ws'
-        puts @url
+
         @reconnect = options[:reconnect] || false
-        @reconnect_after = options[:reconnect_after] || 30
+        @reconnect_after = options[:reconnect_after] || 5
         @stop = false
       end
 
@@ -187,6 +187,7 @@ module Bitfinex
       def stop!
         @stop = true
         @ws.close
+        EM.stop
       end
 
       def connect!
@@ -224,14 +225,15 @@ module Bitfinex
       end
 
       def ws_closed(event)
-        if @stop
-          EM.stop
-        elsif @reconnect
-          EM.add_timer(@reconnect_after) {connect!}
-        end
+        # if @stop
+        #   EM.stop
+        # elsif @reconnect
+        #   EM.add_timer(@reconnect_after) {connect!}
+        # end
       end
 
       def ws_error(event)
+        EM.stop
         raise WebsocketError, event.message
       end
     end
