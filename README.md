@@ -23,6 +23,12 @@ Or install it yourself as:
 
     $ gem install bitfinex-rb
 
+## Test using:
+
+    bundle exec exe/bitfinex-rb
+    gem build bitfinex-rb.gemspec 
+    gem inabox bitfinex-rb-0.1.2.gem
+    
 ## Usage
 
 Configure your gem as:
