@@ -5,12 +5,18 @@ Thread.new {
 
   while (true) do
     begin
-      sleep(10)
+      sleep(25)
+      if !client.is_open?
+        puts "not open"
+        # next
+      end
+
       puts "sending ping"
       client.ws_send({event: 'ping'})
       puts "sent"
       client.ws_close_all
     rescue Exception => e
+      puts "ERROR2"
       puts e
     end
   end
@@ -20,12 +26,19 @@ while true
     puts "RECONNECTING"
     client = Bitfinex::Client.new(2)
     client.listen_trades("BTCUSD") do |trade|
-      puts trade.join(",") if trade.instance_of? Array
+      if trade.instance_of? Array
+      puts trade.join(",")
+      else
+        puts trade
+        end
     end
     client.listen!
+
   rescue Exception => e
+
+    puts "ERROR1"
     puts e
     puts e.backtrace
   end
-  sleep(3)
+  # sleep(5)
 end

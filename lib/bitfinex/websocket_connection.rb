@@ -5,6 +5,10 @@ require 'json'
 module Bitfinex
   module WebsocketConnection
 
+    def is_open?
+      @ws_open
+    end
+
     def listen!
       subscribe_to_channels
       listen
@@ -12,6 +16,7 @@ module Bitfinex
     end
 
     def ws_send(msg)
+
       ws_client.send msg
     end
 
@@ -166,7 +171,7 @@ module Bitfinex
         # set some defaults
         @url = options[:url] || 'wss://api.bitfinex.com/ws'
 
-        @reconnect = options[:reconnect] || false
+        @reconnect = options[:reconnect] || true
         @reconnect_after = options[:reconnect_after] || 5
         @stop = false
       end
@@ -178,8 +183,10 @@ module Bitfinex
 
       def run!
         if EventMachine.reactor_running?
+          # puts "connect"
           connect!
         else
+          # puts "run"
           EM.run {connect!}
         end
       end
@@ -187,7 +194,7 @@ module Bitfinex
       def stop!
         @stop = true
         @ws.close
-        EM.stop
+        # EM.stop
       end
 
       def connect!
@@ -225,15 +232,18 @@ module Bitfinex
       end
 
       def ws_closed(event)
-        # if @stop
-        #   EM.stop
-        # elsif @reconnect
-        #   EM.add_timer(@reconnect_after) {connect!}
-        # end
+        # puts "ws stop"
+        if @stop
+          # puts "stoping "
+          EM.stop
+        elsif @reconnect
+          # puts "reconnecting"
+          connect!
+        end
       end
 
       def ws_error(event)
-        EM.stop
+        puts event
         raise WebsocketError, event.message
       end
     end

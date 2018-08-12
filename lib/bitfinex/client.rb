@@ -47,6 +47,8 @@ module Bitfinex
         @websocket_api_endpoint = "wss://api.bitfinex.com/ws/2/"
         #@websocket_api_endpoint = "ws://localhost:8000"
 
+        #puts @websocket_api_endpoint
+
         extend Bitfinex::V2::TickerClient
         extend Bitfinex::V2::StatsClient
         extend Bitfinex::V2::UtilsClient
