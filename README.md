@@ -28,6 +28,7 @@ Or install it yourself as:
     bundle exec exe/bitfinex-rb
     gem build bitfinex-rb.gemspec 
     gem inabox bitfinex-rb-0.1.2.gem
+    gem specific_install 'https://github.com/samuraraujo/bitfinex-api-rb.git'
     
 ## Usage
 
