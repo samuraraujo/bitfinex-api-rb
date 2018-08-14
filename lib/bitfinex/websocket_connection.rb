@@ -193,7 +193,8 @@ module Bitfinex
 
       def stop!
         @stop = true
-        @ws.close
+        @ws.close if EventMachine.reactor_running?
+
         # EM.stop
       end
 

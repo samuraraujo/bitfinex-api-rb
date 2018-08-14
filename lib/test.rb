@@ -1,5 +1,6 @@
 require "./bitfinex.rb"
-
+client = Bitfinex::Client.new(2)
+Thread.abort_on_exception = true
 client = Bitfinex::Client.new(2)
 Thread.new {
 
@@ -15,9 +16,12 @@ Thread.new {
       client.ws_send({event: 'ping'})
       puts "sent"
       client.ws_close_all
+      sleep(2)
+      client.ws_close_all
     rescue Exception => e
       puts "ERROR2"
       puts e
+      client.ws_close_all
     end
   end
 }
@@ -40,5 +44,5 @@ while true
     puts e
     puts e.backtrace
   end
-  # sleep(5)
+   sleep(5)
 end
