@@ -16,7 +16,6 @@ module Bitfinex
     end
 
     def ws_send(msg)
-
       ws_client.send msg
     end
 
@@ -194,7 +193,6 @@ module Bitfinex
       def stop!
         @stop = true
         @ws.close if EventMachine.reactor_running?
-
         # EM.stop
       end
 

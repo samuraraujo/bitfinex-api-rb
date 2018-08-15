@@ -18,7 +18,7 @@
     <orderEntry type="library" scope="PROVIDED" name="faraday_middleware (v0.12.2, RVM: ruby-2.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="faye-websocket (v0.10.7, RVM: ruby-2.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="hashdiff (v0.3.7, RVM: ruby-2.4.1) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="json (v1.8.6, RVM: ruby-2.4.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="json (v2.0.2, RVM: ruby-2.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="multipart-post (v2.0.0, RVM: ruby-2.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="public_suffix (v3.0.2, RVM: ruby-2.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec (v3.7.0, RVM: ruby-2.4.1) [gem]" level="application" />

@@ -15,9 +15,9 @@ Thread.new {
       puts "sending ping"
       client.ws_send({event: 'ping'})
       puts "sent"
-      client.ws_close_all
+      # client.ws_close_all
       sleep(2)
-      client.ws_close_all
+      # client.ws_close_all
     rescue Exception => e
       puts "ERROR2"
       puts e
@@ -37,9 +37,7 @@ while true
         end
     end
     client.listen!
-
   rescue Exception => e
-
     puts "ERROR1"
     puts e
     puts e.backtrace
